@@ -63,14 +63,18 @@ If a task depends on something that isn't green yet, it's gray (blocked). When t
 
 ### Setup
 
-First, clone Kanvas somewhere on your machine:
-
-Drop these files into your project repo:
-
-Then open your project folder in Obsidian (so it creates the `.obsidian/` directory), and run `init`:
+Clone Kanvas **outside** your project — it's a separate tool, not something you nest inside your repo:
 
 ```bash
-python Kanvas/canvas-tool.py init /path/to/your-project
+# Example: both repos live side by side
+~/repos/Kanvas/          # ← clone Kanvas here
+~/repos/my-project/      # ← your actual project
+```
+
+Then open your project folder in Obsidian (so it creates the `.obsidian/` directory), and run `init` pointing at your project:
+
+```bash
+python ~/repos/Kanvas/canvas-tool.py init ~/repos/my-project
 ```
 
 This copies everything you need into the target directory:
@@ -79,6 +83,12 @@ This copies everything you need into the target directory:
 - `RULES.md` — workflow protocol
 - `Project.canvas` — blank board template (only if no `.canvas` file exists yet)
 - **Canvas Watcher plugin** — automatically installed if `.obsidian/` exists
+
+To skip the plugin install, pass `--no-plugin`:
+
+```bash
+python Kanvas/canvas-tool.py init /path/to/your-project --no-plugin
+```
 
 > **Note:** The Canvas Watcher plugin can only be installed if `.obsidian/` exists in your project — and that directory is created when Obsidian first opens the folder as a vault. If you run `init` before opening Obsidian, the plugin step will be skipped. Just open the folder in Obsidian and run `init` again to finish the install.
 
@@ -114,7 +124,7 @@ Alternatively, drop these files into your project repo yourself:
 ## CLI Reference
 
 ```
-python canvas-tool.py init [TARGET_DIR]              # set up Kanvas in a project
+python canvas-tool.py init [TARGET_DIR] [--no-plugin] # set up Kanvas in a project
 python canvas-tool.py "<file>.canvas" <command> [args]
 ```
 
@@ -122,7 +132,7 @@ python canvas-tool.py "<file>.canvas" <command> [args]
 
 | Command | Description |
 |---------|-------------|
-| `init [DIR]` | Initialize Kanvas in a directory (copies files, installs plugin) |
+| `init [DIR] [--no-plugin]` | Initialize Kanvas in a directory (copies files, optionally installs plugin) |
 
 **Read:**
 

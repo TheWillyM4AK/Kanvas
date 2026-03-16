@@ -7,10 +7,10 @@ workflow rules (valid color transitions, dependency cycle detection, blocked
 state management) so agents cannot make invalid changes.
 
 Usage: python canvas-tool.py "<file>.canvas" <command> [args]
-       python canvas-tool.py init [TARGET_DIR]
+       python canvas-tool.py init [TARGET_DIR] [--no-plugin]
 
 Setup:
-  init [TARGET_DIR]                 Initialize Kanvas in a project directory
+  init [TARGET_DIR] [--no-plugin]   Initialize Kanvas in a project directory
 
 Read-only commands:
   status                          Board overview (groups, states, anomalies)
@@ -1233,7 +1233,7 @@ def cmd_normalize(canvas, _args, path):
 # Init command — sets up Kanvas in a target project directory
 # ---------------------------------------------------------------------------
 
-def cmd_init(target_dir):
+def cmd_init(target_dir, install_plugin=True):
     """Initialize Kanvas in a project directory.
 
     Copies the necessary files and optionally installs the Obsidian plugin.
@@ -1275,9 +1275,11 @@ def cmd_init(target_dir):
             shutil.copy2(src_blank, os.path.join(target, "Project.canvas"))
             copied.append("Project.canvas (from blank template)")
 
-    # 5. Install Canvas Watcher plugin if .obsidian/ exists
+    # 5. Install Canvas Watcher plugin if .obsidian/ exists and not skipped
     obsidian_dir = os.path.join(target, ".obsidian")
-    if os.path.isdir(obsidian_dir):
+    if not install_plugin:
+        print("  Skipping plugin install (--no-plugin).\n")
+    elif os.path.isdir(obsidian_dir):
         plugin_src = os.path.join(script_dir, "canvas-watcher-plugin")
         plugin_dst = os.path.join(obsidian_dir, "plugins", "canvas-watcher")
         os.makedirs(plugin_dst, exist_ok=True)
@@ -1383,8 +1385,11 @@ def main():
 
     # Handle 'init' before normal parsing (it doesn't need a canvas file)
     if len(sys.argv) >= 2 and sys.argv[1] == "init":
-        target = sys.argv[2] if len(sys.argv) >= 3 else "."
-        cmd_init(target)
+        init_args = sys.argv[2:]
+        no_plugin = "--no-plugin" in init_args
+        positional = [a for a in init_args if not a.startswith("--")]
+        target = positional[0] if positional else "."
+        cmd_init(target, install_plugin=not no_plugin)
         return
 
     parser = build_parser()
