@@ -3,7 +3,6 @@ const { Plugin, Notice, TFile, setIcon, addIcon } = require("obsidian");
 // Custom icons: horizontal lines + down arrow (vertical layout)
 //               vertical lines + right arrow (horizontal layout)
 // Icons use Obsidian's 0 0 100 100 viewBox convention
-// Icons use Obsidian's 0 0 100 100 viewBox convention
 addIcon("dag-layout-v", `
   <line x1="8"  y1="20" x2="55" y2="20" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
   <line x1="8"  y1="50" x2="55" y2="50" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
@@ -286,7 +285,6 @@ function manageBlockedStates(nodes, edges) {
 
 // --- DAG Layout Engine ---
 //
-// Self-contained port of organize-dag-groups.py.
 // Call DagLayout.organize(canvas, { horizontal, layerGap, rowGap }) → new canvas.
 
 const DagLayout = (() => {
@@ -593,7 +591,7 @@ const DagLayout = (() => {
 
         if (parents.length) {
           targets[t.id] = avg(parents.map(cardCenter));
-          // fall through — last line overwrites with current x_pos (matches Python semantics)
+          // fall through to last line — target gets overwritten with current position
         } else if (hasMembership && slotCounts[myCol] === 1) {
           const gid       = membership[t.id];
           const sameGroup = Object.keys(xPos).filter(o => membership[o] === gid && o !== t.id);
