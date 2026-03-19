@@ -189,9 +189,7 @@ The plugin adds two layout buttons to the Obsidian canvas toolbar:
 - **Vertical layout** (lines + down arrow) — arrange cards top-to-bottom by dependency depth
 - **Horizontal layout** (lines + right arrow) — arrange cards left-to-right by dependency depth
 
-Both buttons lay out tasks in topological order, group related cards together, resolve depth conflicts across groups via graph coloring, and apply transitive reduction so only direct dependency arrows are shown.
-
-A **layer-gap slider** below the buttons controls the spacing between dependency levels. Drag up to decrease spacing, drag down to increase it. The value is persisted across sessions.
+A **layer-gap slider** below the buttons controls the spacing between dependency levels. Drag up to decrease spacing, drag down to increase it. 
 
 ---
 
