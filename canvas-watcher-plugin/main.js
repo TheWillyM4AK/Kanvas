@@ -596,7 +596,7 @@ const DagLayout = (() => {
           const gid       = membership[t.id];
           const sameGroup = Object.keys(xPos).filter(o => membership[o] === gid && o !== t.id);
           if (sameGroup.length) {
-            targets[t.id] = avg(sameGroup.map(cardCenter));
+            targets[t.id] = colXStart[myCol] + sizes[t.id][0] / 2;
             continue;  // only cohesion case skips the fallback
           }
         }
